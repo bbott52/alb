@@ -14,12 +14,6 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <link rel="stylesheet" href="https://darknudes.com/libraries/animate.css"/>
-
-    <script src="https://darknudes.com/libraries/sweetalert2@11.js" type="text/javascript"></script>
-    <script src="https://darknudes.com/libraries/jquery.min.js"></script>
-    <script src="https://darknudes.com/scripts/shared.js?v=1.0.3"></script>
-
     <style>
         .custom-toast .swal2-timer-progress-bar {
             background-color: red !important; /* Change this to your desired color */
@@ -137,7 +131,6 @@
     <link rel="stylesheet/less" href="less/theme.less">
     <link rel="stylesheet" href="libraries/bootstrap.css">
 
-    <script src="https://darknudes.com/libraries/less.js"></script>
 
     </head>
 
@@ -281,120 +274,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-
-        const x = document.getElementById("myTopnav");
-        function toggleNav() {
-            if (!x.classList.contains("responsive") ) {
-                x.classList.add("responsive");
-            } else {
-                x.classList.remove("responsive");
-            }
-        }
-
-        $(document).ready(function(){
-            if ($(window).width() < 768)
-                x.className = "topnav"; // To trigger menu toggler on first click
-
-            $('#search').click(function (){
-
-                const search = $('#txtSearch').val();
-
-                if (search.trim().length < 1){
-                    Toast("", "Enter video name", "error");
-                    return;
-                }
-
-                window.location.href = "search?s="+search;
-
-            });
-
-            // Sign up form
-            $('#signUpForm').submit(function (e){
-                e.preventDefault();
-
-                showLoader("Signing up...");
-                const formData = new FormData(this);
-
-                $.ajax({
-                    method: 'POST',
-                    url: 'savers/save_user',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response){
-                        hideLoader();
-                        response = JSON.parse(response);
-                        if (response.result === 'success'){
-                            $('#signUpModal').modal('hide')
-                            Notify('','You have successfully signed up. You can now login', 'success');
-                        }else{
-                            Notify('',response.result,'error');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        Notify('',error,'error');
-                    }
-                });
-            });
-        });
-
-        $(document).click(function(event){
-            if (!$(event.target).closest('.video-menu, .video-menu-toggle').length) {
-                $('.video-menu').hide(200);
-            }
-            if (!$(event.target).closest('.userPanel, #user-panel-toggle').length) {
-                $('#userPanel').hide(200);
-            }
-
-        });
-
-
-        function showSignUp(){
-            $('#signUpModal').modal('show');
-            $('#loginModal').modal('hide');
-            toggleUserPanel();
-        }
-        function showLogin(){
-            $('#loginModal').modal('show');
-            $('#signUpModal').modal('hide');
-            toggleUserPanel();
-        }
-
-        function togglePassword(ele){
-            const passwordField = $('.secret');
-            const fieldType = passwordField.attr('type');
-            if (fieldType === 'password') {
-                passwordField.attr('type', 'text');
-            } else {
-                passwordField.attr('type', 'password');
-            }
-            $(ele).toggleClass('fa-eye fa-eye-slash');
-        }
-
-        function toggleUserPanel(){
-            $("#userPanel").fadeToggle(200);
-        }
-
-        function showVideoMenu(menu){
-            $('.video-menu').hide(200);
-            $("#"+menu).fadeToggle(200);
-        }
-
-        function openList(type){
-            if (isLoggedIn === 'false'){
-                showLogin();
-                Toast('', 'Sign In to continue', 'info');
-                return;
-            }
-            if (type === 1)
-                window.location.href = "watch-later";
-            else if (type === 2)
-                window.location.href = "favourites";
-        }
-
-    </script>
 
     </body>
 </html>
@@ -903,8 +782,6 @@
     <script>
         const logoUrl = 'https://darknudes.com//images/logo.png';
     </script>
-    <script src="https://darknudes.com/libraries/popper.min.js"></script>
-    <script src="https://darknudes.com/libraries/bootstrap.bundle.min.js"></script>
 
     <style>
         
@@ -929,84 +806,8 @@
         <br/>
         <p class="text-center">Designed by: <a class="text-info" href="https://bertofametech.com" target="_blank">Berto Fame Technologies</a></p>
     </div>
-
-    <script>
-
-        $('.more').each(function(){
-            $(this).addClass('px-2 py-1 btn btn-outline-danger').css({'font-size': '10pt'});
-        });
-        $('.more i').each(function(){
-            $(this).addClass('fa fa-arrow-right ml-1');
-        });
-
-        $(document).ready(function(){
-
-            AOS.init({
-                easing: 'ease-out-back',
-                duration: 800,
-            });
-            
-        });
-
-        function saveWatchLater(video_id){
-            if (isLoggedIn === 'false'){
-                showLogin();
-                Toast('', 'Sign In to continue', 'info');
-                return;
-            }
-            $.ajax({
-                url: 'savers/save_favourite_watch_later',
-                type: 'POST',
-                data: {videoId: video_id, type: 'watch_later'},
-                success: function(response) {
-                    $('.video-menu').hide(200);
-                    response = JSON.parse(response);
-                    if (response.result === 'success'){
-                        Toast('', "Added to watch later", 'success', 2000);
-                    }else
-                        Toast('', response.result, 'error');
-                },
-                error: function(xhr, status, error) {
-                    Toast('', error, 'error');
-                }
-            });
-        }
-
-        function saveFavourite(video_id){
-            if (isLoggedIn === 'false'){
-                showLogin();
-                Toast('', 'Sign In to continue', 'info');
-                return;
-            }
-            $.ajax({
-                url: 'savers/save_favourite_watch_later',
-                type: 'POST',
-                data: {videoId: video_id, type: 'favourites'},
-                success: function(response) {
-                    $('.video-menu').hide(200);
-                    response = JSON.parse(response);
-                    if (response.result === 'success'){
-                        Toast('', "Added to favourites", 'success', 2000);
-                    }else
-                        Toast('', response.result, 'error');
-                },
-                error: function(xhr, status, error) {
-                    Toast('', error, 'error');
-                }
-            });
-        }
-    </script>
 </body>
 </html>
-
-   <script>
-
-       $(document).ready(function(){
-                           $('#nav-home').addClass("active");
-           
-                           $.getScript("//perchincomenotorious.com/4e/f3/b1/4ef3b102936625e241a1628c752d014a.js");
-                  });
-    </script>
 <script>
 document.addEventListener("click", function(event) {
   event.preventDefault();
