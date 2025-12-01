@@ -1,1 +1,0 @@
-intelligent2.js
